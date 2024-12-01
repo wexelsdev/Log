@@ -14,15 +14,15 @@ namespace SomeNamespace;
 
 public class Program
 {
-    private Logger _log = new();
+    private static readonly Logger Log = new();
     // or
-    // private Logger _log = new("PathToLogDirectory");
-
-    public void Main(string[] args)
+    // private static readonly Logger Log = new("PathToLogDirectory");
+    
+    public static void Main(string[] args)
     {
-        _log.Info("Hello World!");
-        _log.Warning("Hello World!");
-        _log.Error("Hello World!");
+        Log.Info("Hello World!");
+        Log.Warning("Hello World!");
+        Log.Error("Hello World!");
     }
 }
 ```
