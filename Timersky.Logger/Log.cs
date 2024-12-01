@@ -34,7 +34,7 @@ public sealed class Log
     public void Warning(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Warning, DateTime.UtcNow);
     public void Error(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Error, DateTime.UtcNow);
 
-    private string GetSender()
+    private static string GetSender()
     {
         StackFrame stackFrame = new(2);
         return $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
