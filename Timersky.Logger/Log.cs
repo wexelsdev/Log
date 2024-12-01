@@ -5,18 +5,14 @@ namespace Timersky.Logger;
 public sealed class Log
 {
     private static string? _logFilePath;
-    
-    public static void Info(string message) => Send(message, GetSender(), LogType.Info, DateTime.UtcNow);
-    public static void Warning(string message) => Send(message, GetSender(), LogType.Warning, DateTime.UtcNow);
-    public static void Error(string message) => Send(message, GetSender(), LogType.Error, DateTime.UtcNow);
-    
-    public static void Info(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Info, DateTime.UtcNow);
-    public static void Warning(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Warning, DateTime.UtcNow);
-    public static void Error(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Error, DateTime.UtcNow);
-    
-    public static void LoadLogger()
+
+    public Log(string logDirPath = "")
     {
-        var logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs\\";
+        if (string.IsNullOrEmpty(logDirPath))
+        {
+            logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs\\";
+        }
+        
         _logFilePath = $"{logDirPath}session-{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.log";
         
         if (!Directory.Exists(logDirPath))
@@ -29,21 +25,29 @@ public sealed class Log
             File.Create(_logFilePath).Close();
         }
     }
+    
+    public void Info(string message) => Send(message, GetSender(), LogType.Info, DateTime.UtcNow);
+    public void Warning(string message) => Send(message, GetSender(), LogType.Warning, DateTime.UtcNow);
+    public void Error(string message) => Send(message, GetSender(), LogType.Error, DateTime.UtcNow);
+    
+    public void Info(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Info, DateTime.UtcNow);
+    public void Warning(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Warning, DateTime.UtcNow);
+    public void Error(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Error, DateTime.UtcNow);
 
-    private static string GetSender()
+    private string GetSender()
     {
         StackFrame stackFrame = new(2);
         return $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
     } 
     
-    private static readonly Dictionary<LogType, string> LogNames = new()
+    private readonly Dictionary<LogType, string> _logNames = new()
     {
         { LogType.Info,    "INFORMATION" },
         { LogType.Warning, "  WARNING  " },
         { LogType.Error,   "   ERROR   " }
     };
     
-    private static void Send(string message, string sender, LogType type, DateTime time)
+    private void Send(string message, string sender, LogType type, DateTime time)
     {
         if (_logFilePath != null)
         {
@@ -66,7 +70,7 @@ public sealed class Log
         Console.ForegroundColor = backColor;
         Console.BackgroundColor = logColor;
 
-        Console.Write($"{LogNames[type]}");
+        Console.Write($"{_logNames[type]}");
         
         Console.ForegroundColor = logColor;
         Console.BackgroundColor = backColor;
