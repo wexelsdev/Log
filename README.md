@@ -1,22 +1,22 @@
-# Timersky.Logger
-### Yet another logger
+# Timersky.Log    
+### Yet another logger    
 
-## Installation - [Nuget](https://www.nuget.org/packages/Timersky.Logger)
+## Installation - [Nuget](https://www.nuget.org/packages/Timersky.Log)
 ```
-dotnet add package Timersky.Logger --version 1.0.0
+dotnet add package Timersky.Log --version 1.0.1
 ```
 
 ## Usage
 ```csharp
-using Timersky.Logger;
+using Timersky.Log;
 
 namespace SomeNamespace;
 
 public class Program
 {
-    private Log _log = new();
+    private Logger _log = new();
     // or
-    // private Log _log = new("PathToLogDirectory");
+    // private Logger _log = new("PathToLogDirectory");
 
     public void Main(string[] args)
     {
