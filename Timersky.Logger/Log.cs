@@ -4,97 +4,54 @@ namespace Timersky.Logger;
 
 public sealed class Log
 {
-    private static string logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs\\";
-    private static string logFilePath;
+    private static string? _logFilePath;
     
-    #region string
-
-    public static void Info(string message)
-    {
-        StackFrame stackFrame = new(1);
-        string sender = $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
-            
-        Send(message, sender, LogType.Info, DateTime.UtcNow);
-    }
-        
-    public static void Warning(string message)
-    {
-        StackFrame stackFrame = new(1);
-        string sender = $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
-            
-        Send(message, sender, LogType.Warning, DateTime.UtcNow);
-    }
-        
-    public static void Error(string message)
-    {
-        StackFrame stackFrame = new(1);
-        string sender = $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
-            
-        Send(message, sender, LogType.Error, DateTime.UtcNow);
-    }
-
-    #endregion
+    public static void Info(string message) => Send(message, GetSender(), LogType.Info, DateTime.UtcNow);
+    public static void Warning(string message) => Send(message, GetSender(), LogType.Warning, DateTime.UtcNow);
+    public static void Error(string message) => Send(message, GetSender(), LogType.Error, DateTime.UtcNow);
     
-    #region object
-
-    public static void Info(object message)
-    {
-        StackFrame stackFrame = new(1);
-        string sender = $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
-            
-        Send(message.ToString(), sender, LogType.Info, DateTime.UtcNow);
-    }
-        
-    public static void Warning(object message)
-    {
-        StackFrame stackFrame = new(1);
-        string sender = $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
-            
-        Send(message.ToString(), sender, LogType.Warning, DateTime.UtcNow);
-    }
-        
-    public static void Error(object message)
-    {
-        StackFrame stackFrame = new(1);
-        string sender = $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
-            
-        Send(message.ToString(), sender, LogType.Error, DateTime.UtcNow);
-    }
-
-    #endregion
+    public static void Info(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Info, DateTime.UtcNow);
+    public static void Warning(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Warning, DateTime.UtcNow);
+    public static void Error(object message) => Send(message.ToString() ?? string.Empty, GetSender(), LogType.Error, DateTime.UtcNow);
     
-    internal static Dictionary<LogType, string> LogNames = new()
-    {
-        { LogType.Info,    "INFORMATION" },
-        { LogType.Warning, "  WARNING  " },
-        { LogType.Error,   "   ERROR   " }
-    };
-
     public static void LoadLogger()
     {
-        logFilePath = $"{logDirPath}session-{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.log";
+        var logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs\\";
+        _logFilePath = $"{logDirPath}session-{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.log";
         
         if (!Directory.Exists(logDirPath))
         {
             Directory.CreateDirectory(logDirPath);
         }
         
-        if (!File.Exists(logFilePath))
+        if (!File.Exists(_logFilePath))
         {
-            File.Create(logFilePath).Close();
+            File.Create(_logFilePath).Close();
         }
     }
-    
-    internal static void Send(string message, string sender, LogType type, DateTime time)
+
+    private static string GetSender()
     {
-        using (FileStream file = new(logFilePath, FileMode.Append))
+        StackFrame stackFrame = new(2);
+        return $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
+    } 
+    
+    private static readonly Dictionary<LogType, string> LogNames = new()
+    {
+        { LogType.Info,    "INFORMATION" },
+        { LogType.Warning, "  WARNING  " },
+        { LogType.Error,   "   ERROR   " }
+    };
+    
+    private static void Send(string message, string sender, LogType type, DateTime time)
+    {
+        if (_logFilePath != null)
         {
-            using (StreamWriter writer = new(file))
-            {
-                writer.WriteLine($"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [{type}] [{sender}]: {message}");
-            }
+            using FileStream file = new(_logFilePath, FileMode.Append);
+            using StreamWriter writer = new(file);
+            writer.WriteLine($"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [{type}] [{sender}]: {message}");
         }
-        
+
         ConsoleColor backColor = Console.BackgroundColor;
         ConsoleColor foreColor = Console.ForegroundColor;
         ConsoleColor logColor = ConsoleColor.Magenta;
