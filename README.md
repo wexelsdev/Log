@@ -3,7 +3,7 @@
 
 ## Installation - [Nuget](https://www.nuget.org/packages/Timersky.Log)
 ```
-dotnet add package Timersky.Log --version 1.0.2
+dotnet add package Timersky.Log --version 1.0.3
 ```
 
 ## Usage
