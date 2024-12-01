@@ -1,6 +1,11 @@
 # Timersky.Logger
 ### Yet another logger
 
+## Installation - [Nuget](https://www.nuget.org/packages/Timersky.Logger)
+```
+dotnet add package Timersky.Logger --version 1.0.0
+```
+
 ## Usage
 ```csharp
 using Timersky.Logger;
