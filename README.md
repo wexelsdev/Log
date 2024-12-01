@@ -3,7 +3,7 @@
 
 ## Installation - [Nuget](https://www.nuget.org/packages/Timersky.Log)
 ```
-dotnet add package Timersky.Log --version 1.0.1
+dotnet add package Timersky.Log --version 1.0.2
 ```
 
 ## Usage
@@ -23,6 +23,7 @@ public class Program
         Log.Info("Hello World!");
         Log.Warning("Hello World!");
         Log.Error("Hello World!");
+        Log.Debug("Hello World!");
     }
 }
 ```
