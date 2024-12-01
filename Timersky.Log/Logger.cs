@@ -5,27 +5,41 @@ namespace Timersky.Log;
 public sealed class Logger
 {
     private static string? _logFilePath;
-    public bool DebugIsAllowed = false;
+    
+    /// <summary>
+    /// Specifies whether debug log messages are allowed to be processed.
+    /// If set to <c>false</c>, debug messages are ignored.
+    /// </summary>
+    public static bool DebugIsAllowed = false;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Logger"/> class.
+    /// Creates a directory and a log file for storing session logs if they do not already exist.
+    /// </summary>
+    /// <param name="logDirPath">
+    /// The directory path where log files will be stored. 
+    /// If not specified, defaults to a "logs" folder in the application's base directory.
+    /// </param>
     public Logger(string logDirPath = "")
     {
         if (string.IsNullOrEmpty(logDirPath))
         {
             logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs\\";
         }
-        
+    
         _logFilePath = $"{logDirPath}session-{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.log";
-        
+    
         if (!Directory.Exists(logDirPath))
         {
             Directory.CreateDirectory(logDirPath);
         }
-        
+    
         if (!File.Exists(_logFilePath))
         {
             File.Create(_logFilePath).Close();
         }
     }
+
     
     /// <summary>
     /// Logs an informational message to both the console and a file. The timestamp is included only in the file.
