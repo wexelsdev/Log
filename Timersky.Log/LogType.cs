@@ -1,8 +1,10 @@
 namespace Timersky.Log;
 
-internal enum LogType
+public enum LogType
 {
     Info,
     Warning,
-    Error
+    Error,
+    Debug,
+    In
 }
