@@ -10,7 +10,7 @@ public sealed class Logger
     /// Specifies whether debug log messages are allowed to be processed.
     /// If set to <c>false</c>, debug messages are ignored.
     /// </summary>
-    public static bool DebugIsAllowed = false;
+    public bool DebugIsAllowed = false;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Logger"/> class.
@@ -93,9 +93,14 @@ public sealed class Logger
     /// Reads a line of input from the console and logs it to a file with a timestamp.
     /// </summary>
     /// <returns>The input string entered by the user, or null if no input was provided.</returns>
-    public string? Read()
+    public string? Read(bool secure = false)
     {
         string? message = Console.ReadLine();
+
+        if (secure)
+        {
+            message = "**************";
+        }
         
         WriteFile(message ?? string.Empty, string.Empty, LogType.In, DateTime.UtcNow);
         return message;

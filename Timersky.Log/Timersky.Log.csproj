@@ -6,8 +6,8 @@
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Company>Time2138</Company>
-        <AssemblyVersion>1.0.4</AssemblyVersion>
-        <FileVersion>1.0.4</FileVersion>
+        <AssemblyVersion>1.0.5</AssemblyVersion>
+        <FileVersion>1.0.5</FileVersion>
         <NeutralLanguage>en-US</NeutralLanguage>
         <Title>Timersky.Log</Title>
         <Authors>Time2138</Authors>
@@ -15,7 +15,7 @@
         <Copyright>(c) Ivan Timersky 2024</Copyright>
         <RepositoryUrl>https://github.com/Time2138/Log</RepositoryUrl>
         <PackageLicenseUrl>https://github.com/Time2138/Log/blob/main/LICENSE</PackageLicenseUrl>
-        <Version>1.0.4</Version>
+        <Version>1.0.5</Version>
     </PropertyGroup>
 
 </Project>
