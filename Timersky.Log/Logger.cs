@@ -174,11 +174,12 @@ public sealed class Logger
     {
         if (_logFilePath == null) return;
         
-        using FileStream file = new(_logFilePath, FileMode.Append);
-        using StreamWriter writer = new(file);
-
-        writer.WriteLine(type == LogType.In
-            ? $"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [STDIN]: {message}"
-            : $"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [STDOUT] [{type}] [{sender}]: {message}");
+        using (FileStream file = new(_logFilePath, FileMode.Append))
+        {
+            using (StreamWriter writer = new(file))
+            {
+                writer.WriteLine(type == LogType.In ? $"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [STDIN]: {message}" : $"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [STDOUT] [{type}] [{sender}]: {message}");
+            }
+        }
     }
 }
