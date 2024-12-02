@@ -162,7 +162,7 @@ public sealed class Logger
         { LogType.Info,    "INFORMATION" },
         { LogType.Warning, "  WARNING  " },
         { LogType.Error,   "   ERROR   " },
-        { LogType.Error,   "   DEBUG   " }
+        { LogType.Debug,   "   DEBUG   " }
     };
     
     private static void WriteFile(string message, string sender, LogType type, DateTime time)
