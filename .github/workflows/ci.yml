@@ -24,9 +24,13 @@ jobs:
 
     - name: Build Project
       run: dotnet build --configuration Release
-
-    - name: List files in bin/Release
-      run: ls -R ./bin/Release
+      
+    - name: Find DLLs
+      run: |
+        echo "Checking ./bin/Release directory"
+        ls -R ./bin/Release || echo "No files found in ./bin/Release"
+        echo "Checking ./bin/Release/net7.0 directory"
+        ls -R ./bin/Release/net7.0 || echo "No files found in ./bin/Release/net7.0"
 
     - name: Package DLL for Release
       run: |
