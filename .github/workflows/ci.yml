@@ -29,8 +29,8 @@ jobs:
       run: |
         echo "Checking ./bin/Release directory"
         ls -R ./bin/Release || echo "No files found in ./bin/Release"
-        echo "Checking ./bin/Release/net7.0 directory"
-        ls -R ./bin/Release/net7.0 || echo "No files found in ./bin/Release/net7.0"
+        echo "Checking ./bin/Release/net.0 directory"
+        ls -R ./bin/Release/net8.0 || echo "No files found in ./bin/Release/net8.0"
 
     - name: Package DLL for Release
       run: |
