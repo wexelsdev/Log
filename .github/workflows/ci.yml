@@ -25,8 +25,8 @@ jobs:
     - name: Build Project
       run: dotnet build --configuration Release
 
-    - name: Build Project
-      run: dotnet build --configuration Release
+    - name: List files in bin/Release
+      run: ls -R ./bin/Release
 
     - name: Package DLL for Release
       run: |
