@@ -17,7 +17,7 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 8.x  # Укажите вашу версию .NET SDK
+        dotnet-version: 8.x
 
     - name: Restore dependencies
       run: dotnet restore
@@ -28,8 +28,7 @@ jobs:
     - name: Archive DLL
       run: |
         mkdir -p release
-        cp ./bin/Release/net8.0/*.dll ./release/
-        cp ./bin/Release/net8.0/*.pdb ./release/  # Если нужны символы отладки
+        cp /home/runner/work/Log/Log/Timersky.Log/bin/Release/net8.0/*.dll ./release/
         zip -r release.zip release
 
     - name: Upload DLL as Artifact
