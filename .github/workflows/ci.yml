@@ -28,7 +28,7 @@ jobs:
     - name: Archive DLL
       run: |
         mkdir -p release
-        cp /home/runner/work/Log/Log/Timersky.Log/bin/Release/net8.0/*.dll ./release/
+        cp ./Timersky.Log/bin/Release/net8.0/*.dll ./release/
         zip -r release.zip release
 
     - name: Upload DLL as Artifact
@@ -72,10 +72,10 @@ jobs:
     steps:
     - name: Publish to NuGet.org
       run: |
-        dotnet nuget push ./bin/Release/net8.0/*.nupkg --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }}
+        dotnet nuget push ./Timersky.Log/bin/Release/net8.0/*.nupkg --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }}
 
     - name: Publish to GitHub Packages
       run: |
-        dotnet nuget push ./bin/Release/net8.0/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget push ./Timersky.Log/bin/Release/net8.0/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
