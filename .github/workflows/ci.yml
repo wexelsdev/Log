@@ -31,7 +31,7 @@ jobs:
       run: |
         mkdir -p release
         cp ./Timersky.Log/bin/Release/net8.0/*.dll ./release/
-        zip -r release.zip release
+        zip -r ./release.zip ./release
 
     - name: Upload DLL as Artifact
       uses: actions/upload-artifact@v3
