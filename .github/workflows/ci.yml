@@ -43,8 +43,9 @@ jobs:
 
     - name: Create Tag
       run: |
-        git tag ${{ github.ref_name }}
-        git push origin ${{ github.ref_name }}
+        TAG_NAME=$(date +%Y%m%d%H%M%S)
+        git tag $TAG_NAME
+        git push origin $TAG_NAME
 
     - name: Create Release
       uses: actions/create-release@v1
