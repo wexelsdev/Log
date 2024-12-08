@@ -70,6 +70,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: test
+      run: |
+        ls ./Timersky.Log/bin/Release/
+    
     - name: Publish to NuGet.org
       run: |
         dotnet nuget push ./Timersky.Log/bin/Release/*.nupkg --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }}
