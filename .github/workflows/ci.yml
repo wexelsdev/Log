@@ -1,4 +1,4 @@
-name: Build and Publish to Release, GitHub Packages, and NuGet.org
+name: Build and Publish to Release, GitHub Packages and NuGet.org
 
 on:
   push:
