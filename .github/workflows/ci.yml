@@ -25,6 +25,9 @@ jobs:
     - name: Build Project
       run: dotnet build --configuration Release
 
+    - name: Build Project
+      run: dotnet build --configuration Release
+
     - name: Package DLL for Release
       run: |
         mkdir release
