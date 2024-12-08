@@ -99,10 +99,13 @@ public sealed class Logger
 
         if (secure)
         {
-            message = "**************";
+            WriteFile("*************", string.Empty, LogType.In, DateTime.UtcNow);
+        }
+        else
+        {
+            WriteFile(message ?? string.Empty, string.Empty, LogType.In, DateTime.UtcNow);
         }
         
-        WriteFile(message ?? string.Empty, string.Empty, LogType.In, DateTime.UtcNow);
         return message;
     }
 
@@ -155,20 +158,6 @@ public sealed class Logger
         
         WriteFile(message, sender, type, time);
     }
-
-    private static string GetSender()
-    {
-        StackFrame stackFrame = new(2);
-        return $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
-    } 
-    
-    private readonly Dictionary<LogType, string> _logNames = new()
-    {
-        { LogType.Info,    "INFORMATION" },
-        { LogType.Warning, "  WARNING  " },
-        { LogType.Error,   "   ERROR   " },
-        { LogType.Debug,   "   DEBUG   " }
-    };
     
     private static void WriteFile(string message, string sender, LogType type, DateTime time)
     {
@@ -182,4 +171,18 @@ public sealed class Logger
             }
         }
     }
+    
+    private static string GetSender()
+    {
+        StackFrame stackFrame = new(2);
+        return $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
+    } 
+    
+    private readonly Dictionary<LogType, string> _logNames = new()
+    {
+        { LogType.Info,    "INFORMATION" },
+        { LogType.Warning, "  WARNING  " },
+        { LogType.Error,   "   ERROR   " },
+        { LogType.Debug,   "   DEBUG   " }
+    };
 }
