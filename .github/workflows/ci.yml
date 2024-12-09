@@ -45,7 +45,7 @@ jobs:
         run: dotnet restore
       
       - name: Pack NuGet package
-        run: dotnet pack Timersky.Log/ -p:PackageVersion=${{ github.event.release.tag_name }} --configuration Release --output nuget
+        run: dotnet pack Timersky.Log/ --configuration Release --output nuget
 
       - name: Publish NuGet package
         run: dotnet nuget push nuget/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
