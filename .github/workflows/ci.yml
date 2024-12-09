@@ -35,7 +35,7 @@ jobs:
 
     - name: Publish to GitHub Packages
       run: |
-        dotnet nuget push ./bin/Release/net8.0/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+        dotnet nuget add source --username Time2138 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/Timersky.Log/index.json"
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
