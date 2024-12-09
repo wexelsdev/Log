@@ -17,6 +17,7 @@
         <RepositoryUrl>https://github.com/Time2138/Log</RepositoryUrl>
         <PackageLicenseUrl>https://github.com/Time2138/Log/blob/main/LICENSE</PackageLicenseUrl>
         <Version>1.0.7</Version>
+        <PackageVersion>1.0.7</PackageVersion>
     </PropertyGroup>
 
 </Project>
