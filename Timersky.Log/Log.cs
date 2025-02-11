@@ -2,32 +2,22 @@ using System.Diagnostics;
 
 namespace Timersky.Log;
 
-public sealed class Logger
+public sealed class Log
 {
     private static string? _logFilePath;
-    
-    /// <summary>
-    /// Specifies whether debug log messages are allowed to be processed.
-    /// If set to <c>false</c>, debug messages are ignored.
-    /// </summary>
-    public bool DebugIsAllowed = false;
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="Logger"/> class.
-    /// Creates a directory and a log file for storing session logs if they do not already exist.
+    /// Initializes the logging system by setting up the log file directory and creating a new log file.
     /// </summary>
-    /// <param name="logDirPath">
-    /// The directory path where log files will be stored. 
-    /// If not specified, defaults to a "logs" folder in the application's base directory.
-    /// </param>
-    public Logger(string logDirPath = "")
+    /// <param name="logDirPath">The directory where log files should be stored. If not specified, defaults to the "logs" folder in the application's base directory.</param>
+    public static void Initialize(string logDirPath = "")
     {
         if (string.IsNullOrEmpty(logDirPath))
         {
-            logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs\\";
+            logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs/";
         }
     
-        _logFilePath = $"{logDirPath}session-{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.log";
+        _logFilePath = $"{logDirPath}{DateTime.Now:yyyy-MM-dd-hh-mm-ss}.log";
     
         if (!Directory.Exists(logDirPath))
         {
@@ -45,56 +35,61 @@ public sealed class Logger
     /// Logs an informational message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The informational message to log.</param>
-    public void Info(string message) => WriteConsole(message, GetSender(), LogType.Info, DateTime.UtcNow);
+    public static void Info(string message) => WriteConsole(message, GetSender(), LogType.Info, DateTime.UtcNow);
 
     /// <summary>
     /// Logs a warning message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The warning message to log.</param>
-    public void Warning(string message) => WriteConsole(message, GetSender(), LogType.Warning, DateTime.UtcNow);
+    public static void Warning(string message) => WriteConsole(message, GetSender(), LogType.Warning, DateTime.UtcNow);
 
     /// <summary>
     /// Logs an error message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The error message to log.</param>
-    public void Error(string message) => WriteConsole(message, GetSender(), LogType.Error, DateTime.UtcNow);
+    public static void Error(string message) => WriteConsole(message, GetSender(), LogType.Error, DateTime.UtcNow);
 
     /// <summary>
     /// Logs a debug message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The debug message to log.</param>
-    public void Debug(string message) => WriteConsole(message, GetSender(), LogType.Debug, DateTime.UtcNow);
+    public static void Debug(string message) => WriteConsole(message, GetSender(), LogType.Debug, DateTime.UtcNow);
 
     /// <summary>
     /// Logs an informational object message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The informational object to log. Its string representation is used.</param>
-    public void Info(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Info, DateTime.UtcNow);
+    public static void Info(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Info, DateTime.UtcNow);
 
     /// <summary>
     /// Logs a warning object message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The warning object to log. Its string representation is used.</param>
-    public void Warning(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Warning, DateTime.UtcNow);
+    public static void Warning(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Warning, DateTime.UtcNow);
 
     /// <summary>
     /// Logs an error object message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The error object to log. Its string representation is used.</param>
-    public void Error(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Error, DateTime.UtcNow);
+    public static void Error(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Error, DateTime.UtcNow);
 
     /// <summary>
     /// Logs a debug object message to both the console and a file. The timestamp is included only in the file.
     /// </summary>
     /// <param name="message">The debug object to log. Its string representation is used.</param>
-    public void Debug(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Debug, DateTime.UtcNow);
+    public static void Debug(object message) => WriteConsole(message.ToString() ?? string.Empty, GetSender(), LogType.Debug, DateTime.UtcNow);
     
     /// <summary>
     /// Reads a line of input from the console and logs it to a file with a timestamp.
     /// </summary>
     /// <returns>The input string entered by the user, or null if no input was provided.</returns>
-    public string? Read(bool secure = false)
+    public static string? Read(bool secure = false)
     {
+        if (_logFilePath == null)
+        {
+            throw new LoggerNotInitializedException();
+        }
+        
         string? message = Console.ReadLine();
 
         if (secure)
@@ -116,9 +111,12 @@ public sealed class Logger
     /// <param name="sender">The sender information to associate with the log.</param>
     /// <param name="type">The type of log (e.g., Info, Warning, Error, Debug).</param>
     /// <param name="time">The timestamp for the log entry. This is only written to the file, not displayed in the console.</param>
-    public void WriteConsole(string message, string sender, LogType type, DateTime time)
+    public static void WriteConsole(string message, string sender, LogType type, DateTime time)
     {
-        if (DebugIsAllowed && type == LogType.Debug) return;
+        if (_logFilePath == null)
+        {
+            throw new LoggerNotInitializedException();
+        }
         
         var backColor = Console.BackgroundColor;
         var foreColor = Console.ForegroundColor;
@@ -167,7 +165,7 @@ public sealed class Logger
         {
             using (StreamWriter writer = new(file))
             {
-                writer.WriteLine(type == LogType.In ? $"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [STDIN]: {message}" : $"[{time:yyyy-MM-dd HH:mm:ss:ffff}] [STDOUT] [{type}] [{sender}]: {message}");
+                writer.WriteLine(type == LogType.In ? $"|{time:yyyy-MM-dd HH:mm:ss:ffff}| |STDIN | {message}" : $"|{time:yyyy-MM-dd HH:mm:ss:ffff}| |STDOUT| |{_logNames[type]}| |{sender}| {message}");
             }
         }
     }
@@ -178,7 +176,7 @@ public sealed class Logger
         return $"{stackFrame.GetMethod()!.DeclaringType}.{stackFrame.GetMethod()!.Name}";
     } 
     
-    private readonly Dictionary<LogType, string> _logNames = new()
+    private static readonly Dictionary<LogType, string> _logNames = new()
     {
         { LogType.Info,    "INFORMATION" },
         { LogType.Warning, "  WARNING  " },
