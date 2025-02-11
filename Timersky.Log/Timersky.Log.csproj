@@ -7,17 +7,17 @@
         <Nullable>enable</Nullable>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <Company>Time2138</Company>
-        <AssemblyVersion>1.0.7</AssemblyVersion>
-        <FileVersion>1.0.7</FileVersion>
+        <AssemblyVersion>1.0.8</AssemblyVersion>
+        <FileVersion>1.0.8</FileVersion>
         <NeutralLanguage>en-US</NeutralLanguage>
         <Title>Timersky.Log</Title>
         <Authors>Time2138</Authors>
         <Description>Yet another logger</Description>
-        <Copyright>(c) Ivan Timersky 2024</Copyright>
+        <Copyright>(c) Ivan Timersky 2025</Copyright>
         <RepositoryUrl>https://github.com/Time2138/Log</RepositoryUrl>
         <PackageLicenseUrl>https://github.com/Time2138/Log/blob/main/LICENSE</PackageLicenseUrl>
-        <Version>1.0.7</Version>
-        <PackageVersion>1.0.7</PackageVersion>
+        <Version>1.0.8</Version>
+        <PackageVersion>1.0.8</PackageVersion>
     </PropertyGroup>
 
 </Project>
