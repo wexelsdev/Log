@@ -12,6 +12,11 @@ public sealed class Log
     /// <param name="logDirPath">The directory where log files should be stored. If not specified, defaults to the "logs" folder in the application's base directory.</param>
     public static void Initialize(string logDirPath = "")
     {
+        if (!string.IsNullOrEmpty(_logFilePath))
+        {
+            return;
+        }
+        
         if (string.IsNullOrEmpty(logDirPath))
         {
             logDirPath = $"{AppDomain.CurrentDomain.BaseDirectory}logs/";
@@ -85,7 +90,7 @@ public sealed class Log
     /// <returns>The input string entered by the user, or null if no input was provided.</returns>
     public static string? Read(bool secure = false)
     {
-        if (_logFilePath == null)
+        if (string.IsNullOrEmpty(_logFilePath))
         {
             throw new LoggerNotInitializedException();
         }
@@ -113,7 +118,7 @@ public sealed class Log
     /// <param name="time">The timestamp for the log entry. This is only written to the file, not displayed in the console.</param>
     public static void WriteConsole(string message, string sender, LogType type, DateTime time)
     {
-        if (_logFilePath == null)
+        if (string.IsNullOrEmpty(_logFilePath))
         {
             throw new LoggerNotInitializedException();
         }
