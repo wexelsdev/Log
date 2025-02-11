@@ -3,7 +3,7 @@
 
 ## Installation - [Nuget](https://www.nuget.org/packages/Timersky.Log)
 ```
-dotnet add package Timersky.Log --version 1.0.7
+dotnet add package Timersky.Log --version 1.0.8
 ```
 
 ## Usage
@@ -13,13 +13,13 @@ using Timersky.Log;
 namespace SomeNamespace;
 
 public class Program
-{
-    private static readonly Logger Log = new();
-    // or
-    // private static readonly Logger Log = new("PathToLogDirectory");
-    
+{    
     public static void Main(string[] args)
     {
+        Log.Initialize();
+        // or
+        // Log.Initialize("PathToLogDirectory");
+
         Log.Info("Hello World!");
         Log.Warning("Hello World!");
         Log.Error("Hello World!");
